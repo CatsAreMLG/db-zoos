@@ -46,6 +46,7 @@ server.get('/api/zoos', async (req, res) => {
   }
 })
 
+//get
 server.get('/api/zoos/:id', async (req, res) => {
   try {
     const zoo = await db('zoos')
@@ -59,6 +60,7 @@ server.get('/api/zoos/:id', async (req, res) => {
   }
 })
 
+//delete
 server.delete('/api/zoos/:id', async (req, res) => {
   try {
     const count = await db('zoos')
@@ -72,6 +74,7 @@ server.delete('/api/zoos/:id', async (req, res) => {
   }
 })
 
+//put
 server.put('/api/zoos/:id', async (req, res) => {
   if (req.body && req.body.name) {
     try {
