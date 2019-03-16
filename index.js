@@ -20,7 +20,7 @@ server.use(helmet())
 
 //post
 server.post('/api/zoos', async (req, res) => {
-  if (req.body.name) {
+  if (req.body && req.body.name) {
     try {
       const [id] = await db('zoos').insert(req.body)
       const zoo = await db('zoos')
@@ -69,6 +69,29 @@ server.delete('/api/zoos/:id', async (req, res) => {
       : res.status(404).json({ error: 'Animal not found' })
   } catch (e) {
     res.status(500).json(e)
+  }
+})
+
+server.put('/api/zoos/:id', async (req, res) => {
+  if (req.body && req.body.name) {
+    try {
+      const id = req.params.id
+      const count = await db('zoos')
+        .where({ id })
+        .update(req.body)
+      if (count) {
+        const zoo = await db('zoos')
+          .where({ id })
+          .first()
+        res.status(200).json(zoo)
+      } else {
+        res.status(404).json({ error: 'Animal not found' })
+      }
+    } catch (e) {
+      res.status(500).json(e)
+    }
+  } else {
+    res.status(500).json({ error: 'Please provide a name' })
   }
 })
 
